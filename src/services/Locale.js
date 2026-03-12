@@ -1,3 +1,5 @@
+import { Email } from "@mui/icons-material";
+
 export const Locale = {
     en: {
         language: "MN",
@@ -22,6 +24,11 @@ export const Locale = {
         invalidEmail: "Please enter a valid email address.",
         registerInfoEmpty: "Please fill in all fields.",
         passwordNotMatch: "Passwords do not match.",
+
+        name: "Name",
+        Email: "Email",
+        password: "Password",
+        confirmPassword: "Confirm Password",
 
 
 
@@ -84,6 +91,11 @@ export const Locale = {
         invalidEmail: "Зөв имэйл хаяг оруулна уу.",
         registerInfoEmpty: "Бүх талбарыг бөглөнө үү.",
         passwordNotMatch: "Нууц үг таарахгүй байна.",
+
+        name: "Нэр",
+        Email: "Имэйл",
+        password: "Нууц үг",
+        confirmPassword: "Нууц үг давтах",
 
 
 

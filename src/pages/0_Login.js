@@ -244,7 +244,7 @@ export default function Login() {
                 <DialogContent sx={{ display: "flex", flexDirection: "column", gap: 2, }}>
 
                     <TextField
-                        label="Name"
+                        label={loc.name}
                         size="small"
                         fullWidth
                         required
@@ -256,7 +256,7 @@ export default function Login() {
                     />
 
                     <TextField
-                        label="Email"
+                        label={loc.Email}
                         size="small"
                         fullWidth
                         required
@@ -280,7 +280,7 @@ export default function Login() {
                     />
 
                     <TextField
-                        label="Password"
+                        label={loc.password}
                         type={showPassword ? "text" : "password"}
                         size="small"
                         fullWidth
@@ -307,7 +307,7 @@ export default function Login() {
                     />
 
                     <TextField
-                        label="Confirm Password"
+                        label={loc.confirmPassword}
                         type={showPassword ? "text" : "password"}
                         size="small"
                         fullWidth

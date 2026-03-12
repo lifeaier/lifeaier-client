@@ -12,6 +12,11 @@ import { Box, Button, Typography,
 import GoogleIcon from "@mui/icons-material/Google";
 import CircularProgress from "@mui/material/CircularProgress";
 
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+
 export default function Login() {
 
     const apiUrl = process.env.REACT_APP_API_URL;
@@ -33,6 +38,10 @@ export default function Login() {
     const passwordInvalid = registerData.password && !passwordRegex.test(registerData.password);
 
     const passwordMismatch = registerData.confirmPassword && registerData.password !== registerData.confirmPassword;
+
+    const [showPassword, setShowPassword] = React.useState(false);
+
+    const handleTogglePassword = () => { setShowPassword(!showPassword); };
 
     const handleLogin = async () => {
 
@@ -272,7 +281,7 @@ export default function Login() {
 
                     <TextField
                         label="Password"
-                        type="password"
+                        type={showPassword ? "text" : "password"}
                         size="small"
                         fullWidth
                         required
@@ -282,11 +291,24 @@ export default function Login() {
                         onChange={(e) =>
                             setRegisterData({ ...registerData, password: e.target.value })
                         }
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        onClick={handleTogglePassword}
+                                        edge="end"
+                                        size="small"
+                                    >
+                                        {showPassword ? <VisibilityOff fontSize="small" /> : <Visibility fontSize="small" />}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
                     />
 
                     <TextField
                         label="Confirm Password"
-                        type="password"
+                        type={showPassword ? "text" : "password"}
                         size="small"
                         fullWidth
                         required
@@ -296,6 +318,19 @@ export default function Login() {
                         onChange={(e) =>
                             setRegisterData({ ...registerData, confirmPassword: e.target.value })
                         }
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        onClick={handleTogglePassword}
+                                        edge="end"
+                                        size="small"
+                                    >
+                                        {showPassword ? <VisibilityOff fontSize="small" /> : <Visibility fontSize="small" />}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
                     />
 
                 </DialogContent>

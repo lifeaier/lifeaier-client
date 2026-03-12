@@ -13,7 +13,7 @@ import PrivacyTipIcon from "@mui/icons-material/PrivacyTip";
 import DescriptionIcon from "@mui/icons-material/Description";
 
 import { useLang } from "../contexts/LangContext";
-import { Languages } from "../components/Language";
+import { Locale } from "../services/Locale";
 
 import { useTheme, useMediaQuery } from "@mui/material";
 import { useAuth } from "../contexts/AuthContext";
@@ -125,7 +125,7 @@ export default function Header() {
                                 onClick={() => setLang(lang == "en" ? "mn" : "en")}
                                 sx={{fontSize: 20, width: 120, }}
                             >
-                                {Languages[lang].language}
+                                {Locale[lang].language}
                             </Button>
                         </Box>
 
@@ -215,7 +215,7 @@ export default function Header() {
                             }}
                         >
                             <Button color="inherit" onClick={() => handleMenuClick("/")} sx={{fontSize: 20, width: 120, }} >
-                                {Languages[lang].home}
+                                {Locale[lang].home}
                             </Button>
 
                             <Button
@@ -224,7 +224,7 @@ export default function Header() {
                                 onClick={openAboutMenu}
                                 sx={{fontSize: 20, width: 120, }}
                             >
-                                {Languages[lang].about}
+                                {Locale[lang].about}
                             </Button>
 
                             <Menu
@@ -236,15 +236,15 @@ export default function Header() {
                                     <ListItemIcon><HelpOutlineIcon /></ListItemIcon>
                                     <ListItemText>About</ListItemText>
                                 </MenuItem>
-                                <MenuItem onClick={() => window.open("https://www.lifeaier.com/privacy-policy", "_blank", "noopener,noreferrer" )}>
+                                <MenuItem onClick={() => window.open("privacy-policy", "_blank", "noopener,noreferrer" )}>
                                     <ListItemIcon><PrivacyTipIcon /></ListItemIcon>
                                     <ListItemText>Privacy Policy</ListItemText>
                                 </MenuItem>
-                                <MenuItem onClick={() => window.open("https://www.lifeaier.com/term-of-service", "_blank", "noopener,noreferrer" )}>
+                                <MenuItem onClick={() => window.open("term-of-service", "_blank", "noopener,noreferrer" )}>
                                     <ListItemIcon><DescriptionIcon /></ListItemIcon>
                                     <ListItemText>Terms of Service</ListItemText>
                                 </MenuItem>
-                                <MenuItem onClick={() => window.open("https://www.lifeaier.com/data-deletion", "_blank", "noopener,noreferrer" )}>
+                                <MenuItem onClick={() => window.open("data-deletion", "_blank", "noopener,noreferrer" )}>
                                     <ListItemIcon><DescriptionIcon /></ListItemIcon>
                                     <ListItemText>Data Deletion</ListItemText>
                                 </MenuItem>
@@ -264,7 +264,7 @@ export default function Header() {
                                 sx={{ color: "white", fontSize: 16, }}
                                 onClick={() => setLang(lang == "en" ? "mn" : "en")}
                             >
-                                {Languages[lang].language}                                
+                                {Locale[lang].language}                                
                             </IconButton>
                         </Box>
 

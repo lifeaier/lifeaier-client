@@ -12,7 +12,7 @@ import {
     Tooltip,
 } from "@mui/material";
 import { useLang } from "../contexts/LangContext";
-import { Languages } from "../components/Language";
+import { Locale } from "../services/Locale";
 
 export default function PrivacyPolicy() {
     const { lang, setLang } = useLang();
@@ -41,7 +41,7 @@ export default function PrivacyPolicy() {
                 >
                     {/* Language Switch */}
                     <Box display="flex" justifyContent="start" mb={3}>
-                        <Tooltip title={Languages[lang].chooseLanguage}>
+                        <Tooltip title={Locale[lang].chooseLanguage}>
                             <ToggleButtonGroup
                                 value={lang}
                                 exclusive

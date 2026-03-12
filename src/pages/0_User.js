@@ -8,7 +8,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 import { useLang } from "../contexts/LangContext";
-import { Languages } from "../components/Language";
+import { Locale } from "../services/Locale";
 
 export default function User() {
     
@@ -19,10 +19,10 @@ export default function User() {
 
     const handleDelete = async (e) => {
  
-        if(window.confirm(Languages[lang].deleteUserAccount)) {
+        if(window.confirm(Locale[lang].deleteUserAccount)) {
             const response = await ApiService.request("/api/user/delete", { method: "POST", });
-            if (response.ok) { alert(Languages[lang].deleteUserAccountSucceed); }
-            else { alert(Languages[lang].deleteUserAccountFailed); }
+            if (response.ok) { alert(Locale[lang].deleteUserAccountSucceed); }
+            else { alert(Locale[lang].deleteUserAccountFailed); }
             navigate("/login");
         }
     }
@@ -100,7 +100,7 @@ export default function User() {
 
                         <Stack direction="row" spacing={2} justifyContent="space-between">
                             <Button variant="contained" sx={{ width: 120 }} onClick={handleDelete} >
-                                {Languages[lang].delete}
+                                {Locale[lang].delete}
                             </Button>
                             <IconButton color="error" onClick={(e) => handleLogout(e)}>
                                 <LogoutIcon />

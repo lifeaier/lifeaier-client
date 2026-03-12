@@ -3,7 +3,7 @@ import { Box, Typography, Link, List,
     ListItem, ListItemText, Paper,
     ToggleButton, ToggleButtonGroup, Tooltip,  } from '@mui/material';
 import { useLang } from "../contexts/LangContext";
-import { Languages } from "../components/Language";
+import { Locale } from "../services/Locale";
 
 export default function DataDeletion() {
 
@@ -33,7 +33,7 @@ export default function DataDeletion() {
                 >
                     {/* Language Switch */}
                     <Box display="flex" justifyContent="start" mb={3}>
-                        <Tooltip title={Languages[lang].chooseLanguage}>
+                        <Tooltip title={Locale[lang].chooseLanguage}>
                             <ToggleButtonGroup
                                 value={lang}
                                 exclusive

@@ -1,6 +1,22 @@
-export const Languages = {
+export const Locale = {
     en: {
         language: "MN",
+        chooseLanguage: "Choose Language...",
+
+        login: "Login",
+        or: "OR",
+        loginWithGoogle: "Login with Google",
+        loginInfoEmpty: "Please enter both username and password.",
+        loginFailed: "Login failed.",
+        loginIncorrect: "Incorrect username or password.",
+
+        resendMailVerification: "Your email is not verified. Resend verification email?",
+        checkYourInbox: "Verification email resent. Please check your inbox.",
+
+        inputUserInfo: "Enter your information",
+        register: "Register",
+        cancel: "Cancel",
+
         home: "Home",
         test: "Test",
         addWord: "Add word",
@@ -8,9 +24,7 @@ export const Languages = {
         about: "About",
         appDesc: `The [SHINE-UG] app is designed to help you memorize foreign language vocabulary. By entering the foreign words you are learning along with their meanings into the system, you can build your own personal vocabulary database. This allows you to expand your vocabulary by using features such as a daily new word, a complete word dictionary, and various quizzes and tests based on the words you have saved.`,
         securityDesc: `For cybersecurity and privacy reasons, the system does not store your confidential personal information (such as passwords), and you can log in using Google Login`,
-        chooseLanguage: "Choose language!",
         
-        googleLogin: "Google Login",
         facebookLogin: "Facebook Login",
         termOfService: "Terms of Service",
         privacyPolicy: "Privacy Policy",
@@ -41,16 +55,30 @@ export const Languages = {
     },
     mn: {
         language: "EN",
+        chooseLanguage: "Хэлээ сонгоно уу!",
+
+        login: "Нэвтрэх",
+        or: "Эсвэл",
+        loginWithGoogle: "Google хаягаар нэвтрэх",
+        loginInfoEmpty: "Хэрэглэгчийн нэр болон нууц үгийг оруулна уу.",
+        loginFailed: "Нэвтрэхэд алдаа гарлаа.",
+        loginIncorrect: "Хэрэглэгчийн нэр эсвэл нууц үг буруу байна.",
+
+        resendMailVerification: "Таны имэйл баталгаажаагүй байна. Баталгаажуулах имэйлээ дахин илгээх үү?",
+        checkYourInbox: "Баталгаажуулах имэйл илгээгдлээ. Та имэйлээ шалгана уу.",
+
+        inputUserInfo: "Мэдээллээ оруулна уу",
+        register: "Бүртгүүлэх",
+        cancel: "Болих",
+
         home: "Эхлэл",
         test: "Тест",
         addWord: "Үг нэмэх",
         
         about: "Тухай",
         appDesc: `[SHINE-UG] апп нь гадаад хэлний үг цээжилэхэд зориуглагдсан ба та сурч буй гадаад хэлний үг болон утгыг системд оруулсанаар өөрийн гэсэн үгсийн сантай болох боломжтой юм. Ингэснээр та өөрийн бүртгэсэн шинэ үгсийн хүрээнд, өдөр бүрийн шинэ үг, бүх үгний толь, төрөл бүрийн тест шалгалт зэрэг функцуудыг ашиглан үгсийн сангаа нэмэгдүүлэх боломжтой юм.`,
-        securityDesc: `Цахим аюулгүй байдлын үүднээс системд таны хувийн нууц мэдээллийг (нууц дугаар) хадгалахгүй ба Google Login ашиглан нэвтрэх боломжтой.`,
-        chooseLanguage: "Хэлээ сонго!",
+        securityDesc: `Цахим аюулгүй байдлын үүднээс системд таны хувийн нууц мэдээллийг (нууц дугаар) хадгалахгүй ба Google Login ашиглан нэвтрэх боломжтой.`,        
         
-        googleLogin: "Google хаягаар нэвтрэх",
         facebookLogin: "Facebook хаягаар нэвтрэх",
         termOfService: "Үйлчилгээний Нөхцөл",
         privacyPolicy: "Нууцлалын Бодлого",  

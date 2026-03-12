@@ -1,31 +1,51 @@
 import React from 'react';
 import ApiService from "../services/ApiService";
-
-import { Box, Button, Typography, Paper,
-    ToggleButton, ToggleButtonGroup, Tooltip, Link, 
-    TextField, Dialog, DialogTitle,
-    DialogContent, DialogActions} from "@mui/material";
-import GoogleIcon from "@mui/icons-material/Google";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import DescriptionIcon from "@mui/icons-material/Description";
-import PrivacyTipIcon from "@mui/icons-material/PrivacyTip";
-
+import { Locale } from "../services/Locale";
 import { useLang } from "../contexts/LangContext";
-import { Languages } from "../components/Language";
+
+import { Box, Button, Typography, 
+    Paper, ToggleButton, ToggleButtonGroup, 
+    Tooltip, Link, TextField, 
+    Dialog, DialogTitle, DialogContent, 
+    DialogActions} from "@mui/material";
+
+import GoogleIcon from "@mui/icons-material/Google";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export default function Login() {
+
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     const { lang, setLang } = useLang();
 
     const [username, setUsername] = React.useState("");
     const [password, setPassword] = React.useState("");
 
-    const [openJoinDialog, setOpenJoinDialog] = React.useState(false);
-    const [joinData, setJoinData] = React.useState({name: "", email: "", username: "", password: ""});
+    const [openRegisterDialog, setOpenRegisterDialog] = React.useState(false);
+    const [registerData, setRegisterData] = React.useState({name: "", email: "", username: "", password: ""});
+
+    const [loading, setLoading] = React.useState(false);
 
     const handleLogin = async () => {
 
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/login`, {
+        if(!username.trim() || !password.trim()) {
+            alert(loc.loginInfoEmpty);
+            return;
+        }
+        
+        try {
+            setLoading(true);
+            await login();
+        } catch (error) {
+            alert(loc.loginFailed);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const login = async () => {
+
+        const response = await fetch(`${apiUrl}/login`, {
             method: "POST",
             credentials: "include",
             headers: { "Content-Type": "application/json" },
@@ -37,34 +57,34 @@ export default function Login() {
         else { 
             const data = await response.json();
             if(data.error === "MAIL_NOT_VERIFIED") {
-                if(window.confirm("Your email is not verified. Resend verification email?")) {
-                    const response = await fetch(`${process.env.REACT_APP_API_URL}/resend`, {
+                if(window.confirm(loc.resendMailVerification)) {
+                    const response = await fetch(`${apiUrl}/resend`, {
                         method: "POST",
                         credentials: "include",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ username })
                     });
                     if (response.ok) { 
-                        alert("Verification email resent. Please check your inbox.");
+                        alert(loc.checkYourInbox);
                     }                    
                 }
             } else if(data.error === "AUTHENTICATION_FAILED") {   
-                alert("Incorrect username or password.");
+                alert(loc.loginIncorrect);
             } else {
-                alert("Login failed.");
+                alert(loc.loginFailed);
             }            
         }
     };
 
-    const handleJoin = async () => {
+    const handleRegister = async () => {
 
         const response = await ApiService.request("/join", { 
             auth: false,
             method: "POST", 
-            body: JSON.stringify(joinData) 
+            body: JSON.stringify(registerData) 
         });
         if (response.ok) { 
-            setOpenJoinDialog(false);
+            setOpenRegisterDialog(false);
             alert("Registered successfully");
         }
         else { 
@@ -72,7 +92,7 @@ export default function Login() {
         }
     };
 
-    const isLoginDisabled = !username.trim() || !password.trim();
+    const loc = Locale[lang];
 
     return (
         <Box
@@ -90,7 +110,7 @@ export default function Login() {
                 mb={2}
                 sx={{ width: 360 }}
             >
-                <Tooltip title={Languages[lang].chooseLanguage}>
+                <Tooltip title={loc.chooseLanguage}>
                     <ToggleButtonGroup
                         value={lang}
                         exclusive
@@ -104,18 +124,11 @@ export default function Login() {
                 
             </Box>
 
-            {/* <Typography
-                variant="body2"
-                sx={{ maxWidth: 360, mb: 3, color: "text.secondary", textAlign: "justify", }}
-            >
-                {Languages[lang].appDesc}
-            </Typography> */}
-
             <Paper sx={{ p: 2, width: 360, mb: 3, }} elevation={3}>
 
                 <Box display="flex" flexDirection="column" gap={1}>
 
-                    {/* Local Login Fields */}
+                    {/* Local Login */}
                     <TextField
                         label="Username"
                         size="small"
@@ -132,7 +145,7 @@ export default function Login() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         onKeyDown={(e) => {
-                            if (e.key === "Enter" && !isLoginDisabled) {
+                            if (e.key === "Enter") {
                                 handleLogin();
                             }
                         }}
@@ -141,25 +154,16 @@ export default function Login() {
                     <Button
                         variant="contained"
                         fullWidth
-                        disabled={isLoginDisabled}
                         onClick={handleLogin}
                     >
-                        Login
-                    </Button>
-
-                    <Button
-                        variant="text"
-                        fullWidth
-                        onClick={() => setOpenJoinDialog(true)}
-                    >
-                        Join Now
+                        {loading ? <CircularProgress size={24} color="inherit" /> : loc.login}
                     </Button>
 
                     <Box textAlign="center" fontSize={14} color="gray">
-                        OR
+                        {loc.or}
                     </Box>
 
-                    {/* Google OAuth */}
+                    {/* Social Login */}
                     <Button
                         variant="outlined"
                         startIcon={<GoogleIcon />}
@@ -170,39 +174,35 @@ export default function Login() {
                             textTransform: "none",
                         }}
                     >
-                        {Languages[lang].googleLogin}
+                        {loc.loginWithGoogle}
                     </Button>
 
-                    {/* Facebook OAuth */}
-                    {/* <Button
-                        variant="outlined"
-                        startIcon={<FacebookIcon />}
+                    <Button
+                        variant="text"
                         fullWidth
-                        component="a"
-                        href={`${ApiService.apiUrl}/oauth2/authorization/facebook`}
-                        sx={{
-                            textTransform: "none",
-                        }}
+                        onClick={() => setOpenRegisterDialog(true)}
                     >
-                        {Languages[lang].facebookLogin}
-                    </Button> */}
+                        <u>{loc.register}</u>
+                    </Button>
+
                 </Box>
 
             </Paper>
 
-            {/* Join Dialog */}
-            <Dialog open={openJoinDialog} onClose={() => setOpenJoinDialog(false)} fullWidth maxWidth="xs">
-                <DialogTitle>Join Now</DialogTitle>
+            {/* Register Dialog */}
+            <Dialog open={openRegisterDialog} onClose={() => setOpenRegisterDialog(false)} fullWidth maxWidth="xs">
+                <DialogTitle>{loc.inputUserInfo}</DialogTitle>
                 <DialogContent sx={{ display: "flex", flexDirection: "column", gap: 2, }}>
 
                     <TextField
                         label="Name"
                         size="small"
                         fullWidth
-                        value={joinData.name}
+                        required
+                        value={registerData.name}
                         sx={{ mt: 1 }}
                         onChange={(e) =>
-                            setJoinData({ ...joinData, name: e.target.value })
+                            setRegisterData({ ...registerData, name: e.target.value })
                         }
                     />
 
@@ -210,9 +210,10 @@ export default function Login() {
                         label="Email"
                         size="small"
                         fullWidth
-                        value={joinData.email}
+                        required
+                        value={registerData.email}
                         onChange={(e) =>
-                            setJoinData({ ...joinData, email: e.target.value })
+                            setRegisterData({ ...registerData, email: e.target.value })
                         }
                     />
 
@@ -220,9 +221,10 @@ export default function Login() {
                         label="Username"
                         size="small"
                         fullWidth
-                        value={joinData.username}
+                        required
+                        value={registerData.username}
                         onChange={(e) =>
-                            setJoinData({ ...joinData, username: e.target.value })
+                            setRegisterData({ ...registerData, username: e.target.value })
                         }
                     />
 
@@ -231,62 +233,24 @@ export default function Login() {
                         type="password"
                         size="small"
                         fullWidth
-                        value={joinData.password}
+                        required
+                        value={registerData.password}
                         onChange={(e) =>
-                            setJoinData({ ...joinData, password: e.target.value })
+                            setRegisterData({ ...registerData, password: e.target.value })
                         }
                     />
 
                 </DialogContent>
 
                 <DialogActions>
-                    <Button onClick={() => setOpenJoinDialog(false)}>
-                        Cancel
+                    <Button onClick={() => setOpenRegisterDialog(false)}>
+                        {loc.cancel}
                     </Button>
-                    <Button variant="contained" onClick={handleJoin}>
-                        Join
+                    <Button variant="contained" sx={{ width: 128 }} onClick={handleRegister}>
+                        {loc.register}
                     </Button>
                 </DialogActions>
             </Dialog>
-
-            {/* <Paper sx={{ p: 2, width: 360, mb: 3, }} elevation={3}>
-
-                <Box display="flex" flexDirection="column" gap={1}>
-                    <Button
-                        variant="outlined"
-                        startIcon={<DescriptionIcon />}
-                        fullWidth
-                        component="a"
-                        href="https://shineug.com/term-of-service"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        sx={{ textTransform: "none" }}
-                    >
-                        {Languages[lang].termOfService} 
-                    </Button>
-
-                    <Button
-                        variant="outlined"
-                        startIcon={<PrivacyTipIcon />}
-                        fullWidth
-                        component="a"
-                        href="https://shineug.com/privacy-policy"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        sx={{ textTransform: "none" }}
-                    >
-                        {Languages[lang].privacyPolicy}
-                    </Button>
-                </Box>
-
-            </Paper>*/}
-
-            {/* <Typography
-                variant="body2"
-                sx={{ maxWidth: 360, mb: 2, color: "text.secondary", textAlign: "justify", }}
-            >
-                {Languages[lang].securityDesc}
-            </Typography> */}
 
         </Box>
     );

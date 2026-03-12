@@ -11,7 +11,7 @@ import PrivacyTipIcon from "@mui/icons-material/PrivacyTip";
 import DescriptionIcon from "@mui/icons-material/Description";
 
 import { useLang } from "../contexts/LangContext";
-import { Languages } from "../components/Language";
+import { Locale } from "../services/Locale";
 
 import { useTheme, useMediaQuery } from "@mui/material";
 
@@ -95,11 +95,11 @@ export default function Footer() {
                                 height: "100%",
                             }}
                         >
-                            <MyMenuItem icon={<HomeIcon />} label={Languages[lang].home} onClick={() => handleMenuClick("/")} />
+                            <MyMenuItem icon={<HomeIcon />} label={Locale[lang].home} onClick={() => handleMenuClick("/")} />
 
                             <MyMenuItem 
                                 icon={<InfoIcon />} 
-                                label={Languages[lang].about} 
+                                label={Locale[lang].about} 
                                 onClick={openAboutMenu} >
                             </MyMenuItem>
 
@@ -112,15 +112,15 @@ export default function Footer() {
                                     <ListItemIcon><HelpOutlineIcon /></ListItemIcon>
                                     <ListItemText>About</ListItemText>
                                 </MenuItem>
-                                <MenuItem onClick={() => window.open("https://www.lifeaier.com/privacy-policy", "_blank", "noopener,noreferrer" )}>
+                                <MenuItem onClick={() => window.open("privacy-policy", "_blank", "noopener,noreferrer" )}>
                                     <ListItemIcon><PrivacyTipIcon /></ListItemIcon>
                                     <ListItemText>Privacy Policy</ListItemText>
                                 </MenuItem>
-                                <MenuItem onClick={() => window.open("https://www.lifeaier.com/term-of-service", "_blank", "noopener,noreferrer" )}>
+                                <MenuItem onClick={() => window.open("term-of-service", "_blank", "noopener,noreferrer" )}>
                                     <ListItemIcon><DescriptionIcon /></ListItemIcon>
                                     <ListItemText>Terms of Service</ListItemText>
                                 </MenuItem>
-                                <MenuItem onClick={() => window.open("https://www.lifeaier.com/data-deletion", "_blank", "noopener,noreferrer" )}>
+                                <MenuItem onClick={() => window.open("data-deletion", "_blank", "noopener,noreferrer" )}>
                                     <ListItemIcon><DescriptionIcon /></ListItemIcon>
                                     <ListItemText>Data Deletion</ListItemText>
                                 </MenuItem>

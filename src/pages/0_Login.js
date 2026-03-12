@@ -22,9 +22,17 @@ export default function Login() {
     const [password, setPassword] = React.useState("");
 
     const [openRegisterDialog, setOpenRegisterDialog] = React.useState(false);
-    const [registerData, setRegisterData] = React.useState({name: "", email: "", username: "", password: ""});
+    const [registerData, setRegisterData] = React.useState({name: "", email: "", username: "", password: "", confirmPassword: "" });
 
     const [loading, setLoading] = React.useState(false);
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailInvalid = registerData.email && !emailRegex.test(registerData.email);
+
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).+$/;
+    const passwordInvalid = registerData.password && !passwordRegex.test(registerData.password);
+
+    const passwordMismatch = registerData.confirmPassword && registerData.password !== registerData.confirmPassword;
 
     const handleLogin = async () => {
 
@@ -78,6 +86,38 @@ export default function Login() {
 
     const handleRegister = async () => {
 
+        if(!registerData.name.trim() || !registerData.email.trim() || !registerData.username.trim() || !registerData.password.trim()) {
+            alert(loc.registerInfoEmpty);
+            return;
+        }
+
+        if (!passwordRegex.test(registerData.password)) {
+            alert(loc.passwordRule);
+            return;
+        }
+
+        if (!emailRegex.test(registerData.email)) {
+            alert(loc.invalidEmail);
+            return;
+        }
+
+        if (registerData.password !== registerData.confirmPassword) {
+            alert(loc.passwordNotMatch);
+            return;
+        }
+
+        try {
+            setLoading(true);
+            await register();
+        } catch (error) {
+            alert(loc.registerFailed);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const register = async () => {
+
         const response = await ApiService.request("/join", { 
             auth: false,
             method: "POST", 
@@ -85,10 +125,10 @@ export default function Login() {
         });
         if (response.ok) { 
             setOpenRegisterDialog(false);
-            alert("Registered successfully");
+            alert(loc.registerSucceed);
         }
         else { 
-            alert("Registration failed");
+            alert(loc.registerFailed);
         }
     };
 
@@ -130,7 +170,7 @@ export default function Login() {
 
                     {/* Local Login */}
                     <TextField
-                        label="Username"
+                        label="ID"
                         size="small"
                         fullWidth
                         value={username}
@@ -211,6 +251,8 @@ export default function Login() {
                         size="small"
                         fullWidth
                         required
+                        error={emailInvalid}
+                        helperText={emailInvalid ? loc.invalidEmail : ""}
                         value={registerData.email}
                         onChange={(e) =>
                             setRegisterData({ ...registerData, email: e.target.value })
@@ -218,7 +260,7 @@ export default function Login() {
                     />
 
                     <TextField
-                        label="Username"
+                        label="ID"
                         size="small"
                         fullWidth
                         required
@@ -234,9 +276,25 @@ export default function Login() {
                         size="small"
                         fullWidth
                         required
+                        error={passwordInvalid}
+                        helperText={passwordInvalid ? loc.passwordRule : ""}
                         value={registerData.password}
                         onChange={(e) =>
                             setRegisterData({ ...registerData, password: e.target.value })
+                        }
+                    />
+
+                    <TextField
+                        label="Confirm Password"
+                        type="password"
+                        size="small"
+                        fullWidth
+                        required
+                        error={passwordMismatch}
+                        helperText={passwordMismatch ? loc.passwordNotMatch : ""}
+                        value={registerData.confirmPassword}
+                        onChange={(e) =>
+                            setRegisterData({ ...registerData, confirmPassword: e.target.value })
                         }
                     />
 

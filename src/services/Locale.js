@@ -13,9 +13,17 @@ export const Locale = {
         resendMailVerification: "Your email is not verified. Resend verification email?",
         checkYourInbox: "Verification email resent. Please check your inbox.",
 
-        inputUserInfo: "Enter your information",
+        inputUserInfo: "Enter your information!",
         register: "Register",
         cancel: "Cancel",
+        registerFailed: "Registration failed.",
+        registerSucceed: "Registration successful.",
+        passwordRule: "Password must be at least 6 characters long and contain letters and numbers.",
+        invalidEmail: "Please enter a valid email address.",
+        registerInfoEmpty: "Please fill in all fields.",
+        passwordNotMatch: "Passwords do not match.",
+
+
 
         home: "Home",
         test: "Test",
@@ -67,9 +75,17 @@ export const Locale = {
         resendMailVerification: "Таны имэйл баталгаажаагүй байна. Баталгаажуулах имэйлээ дахин илгээх үү?",
         checkYourInbox: "Баталгаажуулах имэйл илгээгдлээ. Та имэйлээ шалгана уу.",
 
-        inputUserInfo: "Мэдээллээ оруулна уу",
+        inputUserInfo: "Мэдээллээ оруулна уу!",
         register: "Бүртгүүлэх",
         cancel: "Болих",
+        registerFailed: "Бүртгүүлэх амжилтгүй боллоо.",
+        registerSucceed: "Бүртгүүлэх амжилттай боллоо.",
+        passwordRule: "Нууц үг нь дор хаяж 6 тэмдэгттэй байх ба үсэг болон тоо агуулсан байх ёстой.",
+        invalidEmail: "Зөв имэйл хаяг оруулна уу.",
+        registerInfoEmpty: "Бүх талбарыг бөглөнө үү.",
+        passwordNotMatch: "Нууц үг таарахгүй байна.",
+
+
 
         home: "Эхлэл",
         test: "Тест",

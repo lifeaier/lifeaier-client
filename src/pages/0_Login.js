@@ -2,6 +2,7 @@ import React from 'react';
 import ApiService from "../services/ApiService";
 import { Locale } from "../services/Locale";
 import { useLang } from "../contexts/LangContext";
+import { useAuth } from "../contexts/AuthContext";
 
 import { Box, Button, Typography, 
     Paper, ToggleButton, ToggleButtonGroup, 
@@ -22,6 +23,7 @@ export default function Login() {
     const apiUrl = process.env.REACT_APP_API_URL;
 
     const { lang, setLang } = useLang();
+    const { user } = useAuth();
 
     const [username, setUsername] = React.useState("");
     const [password, setPassword] = React.useState("");
@@ -43,6 +45,16 @@ export default function Login() {
 
     const handleTogglePassword = () => { setShowPassword(!showPassword); };
 
+    const loc = Locale[lang];
+
+    React.useEffect(() => {
+            
+        if (user) {
+            window.location.href = "/";
+        }
+
+    }, [user]);
+
     const handleLogin = async () => {
 
         if(!username.trim() || !password.trim()) {
@@ -55,6 +67,38 @@ export default function Login() {
             await login();
         } catch (error) {
             alert(loc.loginFailed);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleRegister = async () => {
+
+        if(!registerData.name.trim() || !registerData.email.trim() || !registerData.username.trim() || !registerData.password.trim()) {
+            alert(loc.registerInfoEmpty);
+            return;
+        }
+
+        if (!passwordRegex.test(registerData.password)) {
+            alert(loc.passwordRule);
+            return;
+        }
+
+        if (!emailRegex.test(registerData.email)) {
+            alert(loc.invalidEmail);
+            return;
+        }
+
+        if (registerData.password !== registerData.confirmPassword) {
+            alert(loc.passwordNotMatch);
+            return;
+        }
+
+        try {
+            setLoading(true);
+            await register();
+        } catch (error) {
+            alert(loc.registerFailed);
         } finally {
             setLoading(false);
         }
@@ -93,38 +137,6 @@ export default function Login() {
         }
     };
 
-    const handleRegister = async () => {
-
-        if(!registerData.name.trim() || !registerData.email.trim() || !registerData.username.trim() || !registerData.password.trim()) {
-            alert(loc.registerInfoEmpty);
-            return;
-        }
-
-        if (!passwordRegex.test(registerData.password)) {
-            alert(loc.passwordRule);
-            return;
-        }
-
-        if (!emailRegex.test(registerData.email)) {
-            alert(loc.invalidEmail);
-            return;
-        }
-
-        if (registerData.password !== registerData.confirmPassword) {
-            alert(loc.passwordNotMatch);
-            return;
-        }
-
-        try {
-            setLoading(true);
-            await register();
-        } catch (error) {
-            alert(loc.registerFailed);
-        } finally {
-            setLoading(false);
-        }
-    };
-
     const register = async () => {
 
         const response = await ApiService.request("/join", { 
@@ -140,8 +152,6 @@ export default function Login() {
             alert(loc.registerFailed);
         }
     };
-
-    const loc = Locale[lang];
 
     return (
         <Box

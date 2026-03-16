@@ -185,13 +185,23 @@ export default function Login() {
 
             <Paper sx={{ p: 2, width: 360, mb: 3, }} elevation={3}>
 
-                <Box display="flex" flexDirection="column" gap={1}>
+                <Box 
+                    component="form" 
+                    display="flex" 
+                    flexDirection="column" 
+                    gap={1} 
+                    onSubmit={(e) => {
+                        e.preventDefault();
+                        handleLogin();
+                    }}
+                >
 
                     {/* Local Login */}
                     <TextField
                         label="ID"
                         size="small"
                         fullWidth
+                        autoComplete="username"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                     />
@@ -201,20 +211,12 @@ export default function Login() {
                         type="password"
                         size="small"
                         fullWidth
+                        autoComplete="current-password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        onKeyDown={(e) => {
-                            if (e.key === "Enter") {
-                                handleLogin();
-                            }
-                        }}
                     />
 
-                    <Button
-                        variant="contained"
-                        fullWidth
-                        onClick={handleLogin}
-                    >
+                    <Button type="submit" variant="contained" fullWidth>
                         {loading ? <CircularProgress size={24} color="inherit" /> : loc.login}
                     </Button>
 
@@ -236,6 +238,7 @@ export default function Login() {
                         {loc.loginWithGoogle}
                     </Button>
 
+                    {/* Register */}
                     <Button
                         variant="text"
                         fullWidth
@@ -249,10 +252,19 @@ export default function Login() {
             </Paper>
 
             {/* Register Dialog */}
-            <Dialog open={openRegisterDialog} onClose={() => setOpenRegisterDialog(false)} fullWidth maxWidth="xs">
+            <Dialog 
+                open={openRegisterDialog} 
+                onClose={() => setOpenRegisterDialog(false)} 
+                fullWidth 
+                maxWidth="xs"
+                component="form"
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    handleRegister();
+                }}
+            >
                 <DialogTitle>{loc.inputUserInfo}</DialogTitle>
-                <DialogContent sx={{ display: "flex", flexDirection: "column", gap: 2, }}>
-
+                <DialogContent sx={{ display: "flex", flexDirection: "column", gap: 2, }} >
                     <TextField
                         label={loc.name}
                         size="small"
@@ -269,6 +281,7 @@ export default function Login() {
                         label={loc.Email}
                         size="small"
                         fullWidth
+                        autoComplete="email"
                         required
                         error={emailInvalid}
                         helperText={emailInvalid ? loc.invalidEmail : ""}
@@ -282,6 +295,7 @@ export default function Login() {
                         label="ID"
                         size="small"
                         fullWidth
+                        autoComplete="username"
                         required
                         value={registerData.username}
                         onChange={(e) =>
@@ -294,6 +308,7 @@ export default function Login() {
                         type={showPassword ? "text" : "password"}
                         size="small"
                         fullWidth
+                        autoComplete="new-password"
                         required
                         error={passwordInvalid}
                         helperText={passwordInvalid ? loc.passwordRule : ""}
@@ -308,6 +323,7 @@ export default function Login() {
                                         onClick={handleTogglePassword}
                                         edge="end"
                                         size="small"
+                                        sx={{ mr: -1.5 }}
                                     >
                                         {showPassword ? <VisibilityOff fontSize="small" /> : <Visibility fontSize="small" />}
                                     </IconButton>
@@ -321,6 +337,7 @@ export default function Login() {
                         type={showPassword ? "text" : "password"}
                         size="small"
                         fullWidth
+                        autoComplete="new-password"
                         required
                         error={passwordMismatch}
                         helperText={passwordMismatch ? loc.passwordNotMatch : ""}
@@ -335,6 +352,7 @@ export default function Login() {
                                         onClick={handleTogglePassword}
                                         edge="end"
                                         size="small"
+                                        sx={{ mr: -1.5 }}
                                     >
                                         {showPassword ? <VisibilityOff fontSize="small" /> : <Visibility fontSize="small" />}
                                     </IconButton>
@@ -349,7 +367,7 @@ export default function Login() {
                     <Button onClick={() => setOpenRegisterDialog(false)}>
                         {loc.cancel}
                     </Button>
-                    <Button variant="contained" sx={{ width: 128 }} onClick={handleRegister}>
+                    <Button variant="contained" sx={{ width: 128 }} type="submit">
                         {loc.register}
                     </Button>
                 </DialogActions>
